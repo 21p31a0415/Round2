@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" type="text/css" href="game5.css">
+</head>
+<body>
+    <center>
+    <h1 >TIC TAC TOE GAME</h1>
+    <div class="plain" id="plain"></div>
+    <script>
+        const board = document.getElementById("plain");
+        const cells = new Array(9).fill(null);
+        let Player = "X";
+        let gameOver = false;
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.dataset.index = i;
+            cell.addEventListener("click", () => CellClick(i));
+            board.appendChild(cell);
+        }
+
+        function CellClick(index) {
+            if (gameOver || cells[index]) return;
+
+            cells[index] = Player;
+            board.children[index].textContent = Player;
+            board.children[index].classList.add(Player);
+
+            if (checkWin()) {
+                gameOver = true;
+                alert(`Player ${Player} wins!`);
+            } else if (cells.every(cell => cell !== null)) {
+                gameOver = true;
+                alert("DRAW");
+            } else {
+                Player = Player === "X" ? "O" : "X";
+            }
+        }
+
+        function checkWin() {
+            const winPatterns = [
+                [0, 1, 2],[0, 6, 3],[0, 4, 8],[1, 4, 7],[2, 5, 8],[2, 4, 6],[3, 4, 5],[6, 7, 8],
+            ];
+
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    </script>
+</center>
+</body>
+</html>
